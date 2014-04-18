@@ -24,6 +24,9 @@
 		8189E4441901089200E4DF28 /* SQLiteSampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8189E4431901089200E4DF28 /* SQLiteSampleTests.m */; };
 		8189E44F190108AB00E4DF28 /* SQLiteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8189E44E190108AB00E4DF28 /* SQLiteManager.m */; };
 		8189E451190108D800E4DF28 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8189E450190108D800E4DF28 /* libsqlite3.dylib */; };
+		F9FE9FA519015D7200FC7EEB /* AssetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F9FE9FA219015D7200FC7EEB /* AssetManager.m */; };
+		F9FE9FA619015D7200FC7EEB /* AssetGroupData.m in Sources */ = {isa = PBXBuildFile; fileRef = F9FE9FA419015D7200FC7EEB /* AssetGroupData.m */; };
+		F9FE9FA919015F4800FC7EEB /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9FE9FA819015F4800FC7EEB /* RootViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +63,12 @@
 		8189E44D190108AB00E4DF28 /* SQLiteManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLiteManager.h; sourceTree = "<group>"; };
 		8189E44E190108AB00E4DF28 /* SQLiteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQLiteManager.m; sourceTree = "<group>"; };
 		8189E450190108D800E4DF28 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		F9FE9FA119015D7200FC7EEB /* AssetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetManager.h; sourceTree = "<group>"; };
+		F9FE9FA219015D7200FC7EEB /* AssetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssetManager.m; sourceTree = "<group>"; };
+		F9FE9FA319015D7200FC7EEB /* AssetGroupData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetGroupData.h; sourceTree = "<group>"; };
+		F9FE9FA419015D7200FC7EEB /* AssetGroupData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssetGroupData.m; sourceTree = "<group>"; };
+		F9FE9FA719015F4800FC7EEB /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		F9FE9FA819015F4800FC7EEB /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,11 +130,17 @@
 		8189E41B1901089100E4DF28 /* SQLiteSample */ = {
 			isa = PBXGroup;
 			children = (
+				F9FE9FA119015D7200FC7EEB /* AssetManager.h */,
+				F9FE9FA219015D7200FC7EEB /* AssetManager.m */,
+				F9FE9FA319015D7200FC7EEB /* AssetGroupData.h */,
+				F9FE9FA419015D7200FC7EEB /* AssetGroupData.m */,
 				8189E44D190108AB00E4DF28 /* SQLiteManager.h */,
 				8189E44E190108AB00E4DF28 /* SQLiteManager.m */,
 				8189E4241901089100E4DF28 /* AppDelegate.h */,
 				8189E4251901089100E4DF28 /* AppDelegate.m */,
 				8189E4271901089100E4DF28 /* Main_iPhone.storyboard */,
+				F9FE9FA719015F4800FC7EEB /* RootViewController.h */,
+				F9FE9FA819015F4800FC7EEB /* RootViewController.m */,
 				8189E42A1901089100E4DF28 /* Main_iPad.storyboard */,
 				8189E42D1901089100E4DF28 /* ViewController.h */,
 				8189E42E1901089100E4DF28 /* ViewController.m */,
@@ -263,6 +278,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				8189E42F1901089100E4DF28 /* ViewController.m in Sources */,
+				F9FE9FA919015F4800FC7EEB /* RootViewController.m in Sources */,
+				F9FE9FA519015D7200FC7EEB /* AssetManager.m in Sources */,
+				F9FE9FA619015D7200FC7EEB /* AssetGroupData.m in Sources */,
 				8189E4261901089100E4DF28 /* AppDelegate.m in Sources */,
 				8189E4221901089100E4DF28 /* main.m in Sources */,
 				8189E44F190108AB00E4DF28 /* SQLiteManager.m in Sources */,
@@ -480,6 +498,7 @@
 				8189E4491901089200E4DF28 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8189E44A1901089200E4DF28 /* Build configuration list for PBXNativeTarget "SQLiteSampleTests" */ = {
 			isa = XCConfigurationList;
@@ -488,6 +507,7 @@
 				8189E44C1901089200E4DF28 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

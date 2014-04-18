@@ -119,10 +119,14 @@ static NSMutableArray* gFileNameArray;
     return result;
 }
 
+- (BOOL)insertObjectWithArray:(NSArray*)params
+{
+    return [self insert:params];
+}
 // {"name":"columnName2, "type":type, "value":val, "count":num}
 - (BOOL)insertObject:(NSDictionary*)param, ...
 {
-    BOOL result = YES;
+    //BOOL result = YES;
     va_list arguments;
     va_start(arguments, param);
     NSDictionary* column = param;
@@ -137,6 +141,8 @@ static NSMutableArray* gFileNameArray;
     }
     va_end(arguments);
 
+    return [self insert:array];
+/*
     NSMutableString* sql = [NSMutableString stringWithFormat:@"insert into %@ (",_tableName ];
     for( NSDictionary* param in array ){
         [sql appendFormat:@"%@ ,", [param valueForKey:@"name"]];
@@ -178,12 +184,6 @@ static NSMutableArray* gFileNameArray;
             }
         }
         ret = sqlite3_step(_statement);
-        /*
-        if( ret != SQLITE_OK ){
-            NSLog(@"sqlite3_step error");
-            result = NO;
-        }
-        */
         ret = sqlite3_finalize(_statement);
         if( ret != SQLITE_OK ){
             NSLog(@"sqlite3_finalize error");
@@ -191,6 +191,7 @@ static NSMutableArray* gFileNameArray;
         }
     }
     return result;
+*/
 }
 
 //{"name":"columnName", "index":index, "type":type}
@@ -291,6 +292,65 @@ static NSMutableArray* gFileNameArray;
     NSString* dbPath = paths[0];
     NSString* dbFilePath = [dbPath stringByAppendingPathComponent:fileName];
     return dbFilePath;
+}
+
+- (BOOL)insert:(NSArray*)params
+{
+    BOOL result = YES;
+    NSMutableString* sql = [NSMutableString stringWithFormat:@"insert into %@ (",_tableName ];
+    for( NSDictionary* param in params ){
+        [sql appendFormat:@"%@ ,", [param valueForKey:@"name"]];
+    }
+    NSMutableString *str = [NSMutableString stringWithString:[sql substringToIndex:(sql.length-2)]];
+    [str appendString:@") values ("];
+    for( int i = 0; i < params.count; i ++ ){
+        [str appendString:@"?,"];
+    }
+    NSMutableString* strSql =[NSMutableString stringWithString:[str substringToIndex:(str.length-1)]];
+    [strSql appendString:@")"];
+    NSLog(@"insert: sql = %@",strSql);
+    
+    int ret = sqlite3_prepare_v2(_sqlite, [strSql UTF8String], -1, &_statement, nil);
+    if( ret != SQLITE_OK){
+        result = NO;
+    }else{
+        for ( int x = 1; x < params.count+1; ++x ) {
+            sqlite3_reset(_statement);
+            switch ([[params[x-1]valueForKeyPath:@"type" ] intValue]) {
+                case TypeText:
+                    ret = sqlite3_bind_text(_statement, x, [[params[x-1] valueForKey:@"value"] UTF8String], -1, SQLITE_STATIC);
+                    break;
+                case TypeInteger:
+                    ret = sqlite3_bind_int(_statement, x, [[params[x-1] valueForKey:@"value"] intValue]);
+                    break;
+                case TypeReal:
+                    ret = sqlite3_bind_double(_statement, x, [[params[x-1] valueForKey:@"value"] doubleValue]);
+                    break;
+                case TypeBLOB:
+                    ret = sqlite3_bind_blob(_statement, x, (__bridge const void *)([params[x-1] valueForKey:@"value"]), [[params[x-1] valueForKey:@"count"] intValue], SQLITE_TRANSIENT);
+                    break;
+                default:
+                    break;
+            }
+            if( ret != SQLITE_OK ){
+                NSLog(@"sqlite bind error");
+                result = NO;
+            }
+        }
+        ret = sqlite3_step(_statement);
+        /*
+         if( ret != SQLITE_OK ){
+         NSLog(@"sqlite3_step error");
+         result = NO;
+         }
+         */
+        ret = sqlite3_finalize(_statement);
+        if( ret != SQLITE_OK ){
+            NSLog(@"sqlite3_finalize error");
+            result = NO;
+        }
+    }
+    return result;
 }
 
 

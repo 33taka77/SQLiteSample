@@ -20,6 +20,17 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)test
+{
     _sqliteMngr = [SQLiteManager sharedSQLiteManager:@"testDB2.sqlite3"];
     
     //[_sqliteMngr test];
@@ -69,11 +80,4 @@
     NSArray* results = [_sqliteMngr fetchResultOnSelect:selectString whereAndOrder:whereString format:resultFormat];
     [_sqliteMngr closeDB];
 }
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 @end
