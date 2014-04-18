@@ -67,7 +67,7 @@
     NSArray* resultFormat = @[resultCol1,resultCol2,resultCol3];
     
     NSArray* results = [_sqliteMngr fetchResultOnSelect:selectString whereAndOrder:whereString format:resultFormat];
-
+    [_sqliteMngr closeDB];
 }
 
 - (void)didReceiveMemoryWarning
