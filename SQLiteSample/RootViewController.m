@@ -9,11 +9,13 @@
 #import "RootViewController.h"
 #import "SQLiteManager.h"
 #import "AssetManager.h"
+#import "RootTableViewCell.h"
 
 const NSString* cDBFileName = @"ImageInfo.sqlite3";
 
 @interface RootViewController ()  <AssetLibraryDelegate>
-@property (nonatomic, strong) NSArray* fetchResultArray;
+@property (nonatomic, strong) NSMutableArray* fetchResultArray;
+//@property (nonatomic, strong) NSArray* fetchResultArray;
 @end
 
 @implementation RootViewController
@@ -35,7 +37,7 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     
     NSDictionary* objectParam1 = @{@"name":@"DateTimeOriginal", @"type":[NSNumber numberWithInt:TypeReal], @"value":[NSNumber numberWithDouble:[self convertUnixDateTime:[metaData valueForKey:@"DateTimeOriginal"]]] };
     NSDictionary* objectParam2 = @{@"name":@"groupName", @"type":[NSNumber numberWithInt:TypeText], @"value":[assetManager getGroupNameByURL:groupUrl]};
-    NSDictionary* objectParam3 = @{@"name":@"sectionDate", @"type":[NSNumber numberWithInt:TypeReal], @"value":[self makeShortDateString:[metaData valueForKey:@"DateTimeOriginal"]]};
+    NSDictionary* objectParam3 = @{@"name":@"sectionDate", @"type":[NSNumber numberWithInt:TypeText], @"value":[self makeShortDateString:[metaData valueForKey:@"DateTimeOriginal"]]};
     NSDictionary* objectParam4 = @{@"name":@"url", @"type":[NSNumber numberWithInt:TypeText], @"value":[url absoluteString]};
     NSDictionary* objectParam5 = @{@"name":@"groupUrl", @"type":[NSNumber numberWithInt:TypeText], @"value":[groupUrl absoluteString]};
     NSDictionary* objectParam6 = @{@"name":@"Model", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"Model"]};
@@ -43,7 +45,7 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     
     NSDictionary* objectParam8 = @{@"name":@"ExposureTime", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"ExposureTime"]};
     NSDictionary* objectParam9 = @{@"name":@"FocalLength", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"FocalLength"]};
-    NSDictionary* objectParam10 = @{@"name":@"Orientation", @"type":[NSNumber numberWithInt:TypeText], @"value":[self cnvertNumber: [metaData valueForKey:@"Orientation"]]};
+    NSDictionary* objectParam10 = @{@"name":@"Orientation", @"type":[NSNumber numberWithInt:TypeInteger], @"value":[self cnvertNumber: [metaData valueForKey:@"Orientation"]]};
     NSDictionary* objectParam11 = @{@"name":@"Artist", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"Artist"]};
     NSDictionary* objectParam12 = @{@"name":@"FNumber", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"FNumber"]};
     NSDictionary* objectParam13 = @{@"name":@"ISO", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"ISO"]};
@@ -60,8 +62,13 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
 
 - (NSString*)makeShortDateString:(NSString*)dateTime
 {
-    NSDate* date = [self dateTime:dateTime];
-    return [self dateTimeString:date];
+    NSArray* strArray = [dateTime componentsSeparatedByString:@" "];
+    NSString* str = [strArray[0] stringByReplacingOccurrencesOfString:@":" withString:@"/"];
+    NSString* str2 = [str stringByReplacingOccurrencesOfString:@"-" withString:@"/"];
+    return str2;
+    
+    //NSDate* date = [self dateTime:dateTime];
+    //return [self dateTimeString:date];
 }
 
 - (double)convertUnixDateTime:(NSString*)dateTimeString
@@ -71,10 +78,15 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     return seconds;
 }
 
+- (NSDate*)convertUnixDataToNSDate:(double)time
+{
+    NSDate* nsDate = [NSDate dateWithTimeIntervalSince1970:time];
+    return nsDate;
+}
 - (NSString*)dateTimeString:(NSDate*)dateTime
 {
     NSDateFormatter *inputDateFormatter = [[NSDateFormatter alloc] init];
-    [inputDateFormatter setDateFormat:@"yyyy/MM/dd"];
+    [inputDateFormatter setDateFormat:@"yyyy/mm/dd"];
     return [inputDateFormatter stringFromDate:dateTime];
     
 }
@@ -82,11 +94,14 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
 - (NSDate*)dateTime:(NSString*)dateTime
 {
     NSDateFormatter *inputFormatter = [[NSDateFormatter alloc] init];
-    [inputFormatter setDateFormat:@"yyyy:MM:dd HH:MM:SS"];
+    [inputFormatter setDateFormat:@"YYYY:MM:DD HH:MM:SS"];
     NSDate *formatterDate = [inputFormatter dateFromString:dateTime];
     if(formatterDate == nil){
         [inputFormatter setDateFormat:@"yyyy-MM-dd HH:MM:SS"];
         formatterDate = [inputFormatter dateFromString:dateTime];
+        if( formatterDate == nil ){
+            formatterDate = 0;
+        }
     }
     return formatterDate;
 }
@@ -179,15 +194,20 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     NSArray* resultFormat = @[resultCol1,resultCol2,resultCol3,resultCol4,resultCol5,resultCol6,resultCol7,resultCol8,resultCol9,resultCol10,resultCol11,resultCol12,resultCol13,resultCol14,resultCol15,resultCol16,resultCol17,resultCol18,resultCol19];
 
     NSString* selectString = @"select * from";
-    NSString* whereString = nil;
+    NSString* whereString = @"order by DateTimeOriginal asc";
 
-    _fetchResultArray = [sqlManager fetchResultOnSelect:selectString whereAndOrder:whereString format:resultFormat];
+    _fetchResultArray = [NSMutableArray arrayWithArray:[sqlManager fetchResultOnSelect:selectString whereAndOrder:whereString format:resultFormat]];
+    //_fetchResultArray = [sqlManager fetchResultOnSelect:selectString whereAndOrder:whereString format:resultFormat];
     
  }
 
 - (void)deleteImage
 {
-    
+    SQLiteManager* sqlManager = [SQLiteManager sharedSQLiteManager:(NSString*)cDBFileName];
+    if( [sqlManager deleteObjectWhere:nil] == YES ){
+        [_fetchResultArray removeAllObjects];
+    }
+    [self.tableView reloadData];
 }
 
 - (void)refleshImage
@@ -206,28 +226,33 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return _fetchResultArray.count;
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    RootTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"RootTableCell" forIndexPath:indexPath];
     
     // Configure the cell...
+    AssetManager* assetManager = [AssetManager sharedAssetManager];
     
+    NSDictionary* info = _fetchResultArray[indexPath.row];
+    UIImage* image = [assetManager getThumbnail:[NSURL URLWithString:[info valueForKey:@"url"]]];
+    cell.imageView.image = image;
+    cell.dateTime.text = [self dateTimeString:[self convertUnixDataToNSDate:[[info valueForKey:@"DateTimeOriginal"] doubleValue]]];
+    cell.model.text = [info valueForKey:@"Model"];
+    cell.maker.text = [info valueForKey:@"Maker"];
     return cell;
 }
-*/
+
 
 /*
 // Override to support conditional editing of the table view.

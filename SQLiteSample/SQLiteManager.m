@@ -205,12 +205,14 @@ static NSMutableArray* gFileNameArray;
     {
          sql = [NSMutableString stringWithFormat:@"%@ %@ ",selectString, _tableName];
     }else{
-         sql = [NSMutableString stringWithFormat:@"%@ %@ %@ ",selectString, _tableName, whereAndOrderString ];
+         sql = [NSMutableString stringWithFormat:@"%@ %@ %@",selectString, _tableName, whereAndOrderString ];
     }
     int ret = sqlite3_prepare_v2(_sqlite, [sql UTF8String], -1, &_statement, nil);
     if( ret == SQLITE_OK ){
         while (sqlite3_step(_statement) == SQLITE_ROW) {
             NSMutableDictionary* resultDictionary = [[NSMutableDictionary alloc] init];
+            //for test
+            int i = 0;
             for( NSDictionary* column in formatResult ){
                 int index = [[column valueForKey:@"index"] intValue];
                 int type = [[column valueForKey:@"type"] intValue];
@@ -218,10 +220,16 @@ static NSMutableArray* gFileNameArray;
                 switch (type) {
                     case TypeText:
                     {
+                        // for test
+                        if( i == 17 )
+                        {
+                            NSLog(@"test");
+                        }
+                        //
                         char * resultString = (char*)sqlite3_column_text(_statement, index);
                         NSString* str;
                         if( resultString == NULL ){
-                            str = nil;
+                            str = @"";
                         }else{
                             str = [NSString stringWithUTF8String:resultString];
                         }
@@ -250,6 +258,7 @@ static NSMutableArray* gFileNameArray;
                    default:
                         break;
                 }
+                i++;
             }
             [resultsArray addObject:resultDictionary];
         }
@@ -282,6 +291,30 @@ static NSMutableArray* gFileNameArray;
     return result;
 }
 
+-(BOOL)deleteObjectWhere:(NSString*)whereSqlString
+{
+    BOOL result = YES;
+    NSString* sql;
+    if( whereSqlString == nil ){
+        sql = [NSString stringWithFormat:@"DELETE FROM %@",_tableName ];
+    }else{
+        sql = [NSString stringWithFormat:@"DELETE FROM %@ %@",_tableName, whereSqlString ];
+    }
+    int ret = sqlite3_prepare_v2(_sqlite, [sql UTF8String], -1, &_statement, nil);
+    if( ret != SQLITE_OK ){
+        NSLog(@"sqlite3_prepare_v2 error");
+        result = NO;
+        return result;
+    }
+    sqlite3_step(_statement);
+    ret = sqlite3_finalize(_statement);
+    if( ret  != SQLITE_OK ){
+        NSLog(@"sqlite3_finalize error");
+        result = NO;
+        return result;
+    }
+    return result;
+}
 - (NSString*)getDocumentDirectoryFilepath:(NSString*)fileName
 {
     NSArray* paths = NSSearchPathForDirectoriesInDomains(
@@ -318,6 +351,9 @@ static NSMutableArray* gFileNameArray;
             sqlite3_reset(_statement);
             switch ([[params[x-1]valueForKeyPath:@"type" ] intValue]) {
                 case TypeText:
+                    if(x==10){
+                        NSLog(@"x=10");
+                    }
                     ret = sqlite3_bind_text(_statement, x, [[params[x-1] valueForKey:@"value"] UTF8String], -1, SQLITE_STATIC);
                     break;
                 case TypeInteger:

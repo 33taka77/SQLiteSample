@@ -23,6 +23,7 @@
 - (BOOL)insertObject:(NSDictionary*)param, ...;
 - (BOOL)insertObjectWithArray:(NSArray*)params;
 - (NSArray*)fetchResultOnSelect:(NSString*)selectString whereAndOrder:(NSString*)whereAndOrderString format:(NSArray*)formatResult;
+-(BOOL)deleteObjectWhere:(NSString*)whereSqlString;
 
 - (void)test;
 

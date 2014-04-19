@@ -27,6 +27,7 @@
 		F9FE9FA519015D7200FC7EEB /* AssetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F9FE9FA219015D7200FC7EEB /* AssetManager.m */; };
 		F9FE9FA619015D7200FC7EEB /* AssetGroupData.m in Sources */ = {isa = PBXBuildFile; fileRef = F9FE9FA419015D7200FC7EEB /* AssetGroupData.m */; };
 		F9FE9FA919015F4800FC7EEB /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9FE9FA819015F4800FC7EEB /* RootViewController.m */; };
+		F9FE9FAC19022DB800FC7EEB /* RootTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F9FE9FAB19022DB800FC7EEB /* RootTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,8 @@
 		F9FE9FA419015D7200FC7EEB /* AssetGroupData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssetGroupData.m; sourceTree = "<group>"; };
 		F9FE9FA719015F4800FC7EEB /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		F9FE9FA819015F4800FC7EEB /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		F9FE9FAA19022DB800FC7EEB /* RootTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootTableViewCell.h; sourceTree = "<group>"; };
+		F9FE9FAB19022DB800FC7EEB /* RootTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootTableViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +142,8 @@
 				8189E4241901089100E4DF28 /* AppDelegate.h */,
 				8189E4251901089100E4DF28 /* AppDelegate.m */,
 				8189E4271901089100E4DF28 /* Main_iPhone.storyboard */,
+				F9FE9FAA19022DB800FC7EEB /* RootTableViewCell.h */,
+				F9FE9FAB19022DB800FC7EEB /* RootTableViewCell.m */,
 				F9FE9FA719015F4800FC7EEB /* RootViewController.h */,
 				F9FE9FA819015F4800FC7EEB /* RootViewController.m */,
 				8189E42A1901089100E4DF28 /* Main_iPad.storyboard */,
@@ -282,6 +287,7 @@
 				F9FE9FA519015D7200FC7EEB /* AssetManager.m in Sources */,
 				F9FE9FA619015D7200FC7EEB /* AssetGroupData.m in Sources */,
 				8189E4261901089100E4DF28 /* AppDelegate.m in Sources */,
+				F9FE9FAC19022DB800FC7EEB /* RootTableViewCell.m in Sources */,
 				8189E4221901089100E4DF28 /* main.m in Sources */,
 				8189E44F190108AB00E4DF28 /* SQLiteManager.m in Sources */,
 			);
