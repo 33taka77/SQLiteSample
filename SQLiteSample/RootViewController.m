@@ -185,6 +185,18 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     
     
     _fetchResultArray = [self performSelect:@"select * from" where:@"where Maker = 'Apple' order by sectionDate asc"];
+    NSArray* array = [_fetchResultArray valueForKeyPath:@"groupName"];
+    NSMutableArray* groupNames = [[NSMutableArray alloc] init ];
+    for( NSString* name in array ){
+        if( ![groupNames containsObject:name] ){
+            [groupNames addObject:name];
+        }
+    }
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:groupNames forKey:@"groupNames"];
+    if ( ![defaults synchronize] ) {
+        NSLog( @"failed ..." );
+    }
     
     /*
     NSDictionary* resultCol1 = @{@"name":@"DateTimeOriginal", @"index":[NSNumber numberWithInt:0], @"type":[NSNumber numberWithInt:TypeReal]};
