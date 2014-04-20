@@ -315,6 +315,27 @@ static NSMutableArray* gFileNameArray;
     }
     return result;
 }
+
+- (BOOL)createIndex:(NSString*)name column:(NSString*)column
+{
+    BOOL result = YES;
+    NSString* sql = [NSString stringWithFormat:@"create index %@ on %@(%@)",name,_tableName,column];
+    int ret = sqlite3_prepare_v2(_sqlite, [sql UTF8String], -1, &_statement, nil);
+    if( ret != SQLITE_OK ){
+        NSLog(@"sqlite3_prepare_v2 error");
+        result = NO;
+        return result;
+    }
+    sqlite3_step(_statement);
+    ret = sqlite3_finalize(_statement);
+    if( ret  != SQLITE_OK ){
+        NSLog(@"sqlite3_finalize error");
+        result = NO;
+        return result;
+    }
+    return result;
+}
+
 - (NSString*)getDocumentDirectoryFilepath:(NSString*)fileName
 {
     NSArray* paths = NSSearchPathForDirectoriesInDomains(

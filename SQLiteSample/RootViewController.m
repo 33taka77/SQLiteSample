@@ -22,7 +22,9 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
 
 - (void)updateGroupDataGroupURL:(NSURL *)groupUrl
 {
-    [self.tableView reloadData];
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
 }
 
 - (void)updateItemDataItemURL:(NSURL *)url groupURL:(NSURL *)groupUrl
@@ -34,7 +36,13 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     //UIImage* aspectThumbnail = [assetManager getThumbnailAspect:url];
 
     SQLiteManager* sqlManager = [SQLiteManager sharedSQLiteManager:(NSString*)cDBFileName];
-    
+    NSString* select = @"select * from";
+    NSString* where = [NSString stringWithFormat:@"where url = '%@' order by sectionDate asc", [url absoluteString]];
+    NSMutableArray* arrayOfItem = [self performSelect:select where:where];
+    if( arrayOfItem.count != 0 ){
+        return;
+    }
+        
     NSDictionary* objectParam1 = @{@"name":@"DateTimeOriginal", @"type":[NSNumber numberWithInt:TypeReal], @"value":[NSNumber numberWithDouble:[self convertUnixDateTime:[metaData valueForKey:@"DateTimeOriginal"]]] };
     NSDictionary* objectParam2 = @{@"name":@"groupName", @"type":[NSNumber numberWithInt:TypeText], @"value":[assetManager getGroupNameByURL:groupUrl]};
     NSDictionary* objectParam3 = @{@"name":@"sectionDate", @"type":[NSNumber numberWithInt:TypeText], @"value":[self makeShortDateString:[metaData valueForKey:@"DateTimeOriginal"]]};
@@ -56,6 +64,7 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     NSDictionary* objectParam18 = @{@"name":@"LensInfo", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"LensInfo"]};
     NSDictionary* objectParam19 = @{@"name":@"Lens", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"Lens"]};
 
+    
     [sqlManager insertObject:objectParam1,objectParam2,objectParam3,objectParam4,objectParam5,objectParam6,objectParam7,objectParam8,objectParam9,objectParam10,objectParam11,objectParam12,objectParam13,objectParam14,objectParam15,objectParam16,objectParam17,objectParam18,objectParam19,nil];
     
 }
@@ -171,6 +180,9 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     SQLiteManager* sqlManager = [SQLiteManager sharedSQLiteManager:(NSString*)cDBFileName];
     [sqlManager openDB];
     [self createMainTable];
+    [sqlManager createIndex:@"urlIndex" column:@"url"];
+    [sqlManager createIndex:@"dateIndex" column:@"sectionDate"];
+    
     
     _fetchResultArray = [self performSelect:@"select * from" where:@"where Maker = 'Apple' order by sectionDate asc"];
     
@@ -244,9 +256,10 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
 
 - (void)refleshImage
 {
-    AssetManager* assetManager = [AssetManager sharedAssetManager];
-    [assetManager enumeAssetItems];
-    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        AssetManager* assetManager = [AssetManager sharedAssetManager];
+        [assetManager enumeAssetItems];
+    });
 }
 - (void)didReceiveMemoryWarning
 {
