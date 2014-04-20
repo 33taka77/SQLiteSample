@@ -172,6 +172,9 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     [sqlManager openDB];
     [self createMainTable];
     
+    _fetchResultArray = [self performSelect:@"select * from" where:@"where Maker = 'Apple' order by sectionDate asc"];
+    
+    /*
     NSDictionary* resultCol1 = @{@"name":@"DateTimeOriginal", @"index":[NSNumber numberWithInt:0], @"type":[NSNumber numberWithInt:TypeReal]};
     NSDictionary* resultCol2 = @{@"name":@"groupName", @"index":[NSNumber numberWithInt:1], @"type":[NSNumber numberWithInt:TypeText]};
     NSDictionary* resultCol3 = @{@"name":@"sectionDate", @"index":[NSNumber numberWithInt:2], @"type":[NSNumber numberWithInt:TypeText]};
@@ -194,13 +197,42 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     NSArray* resultFormat = @[resultCol1,resultCol2,resultCol3,resultCol4,resultCol5,resultCol6,resultCol7,resultCol8,resultCol9,resultCol10,resultCol11,resultCol12,resultCol13,resultCol14,resultCol15,resultCol16,resultCol17,resultCol18,resultCol19];
 
     NSString* selectString = @"select * from";
-    NSString* whereString = @"order by DateTimeOriginal asc";
+    NSString* whereString = @"where Maker = 'Apple' order by sectionDate asc";
 
     _fetchResultArray = [NSMutableArray arrayWithArray:[sqlManager fetchResultOnSelect:selectString whereAndOrder:whereString format:resultFormat]];
     //_fetchResultArray = [sqlManager fetchResultOnSelect:selectString whereAndOrder:whereString format:resultFormat];
-    
+    NSArray* array = [_fetchResultArray valueForKeyPath:@"Model"];
+    NSLog(@"count =%d",array.count);
+    */
  }
 
+- (NSMutableArray*)performSelect:(NSString*)selectString where:(NSString*)whereString
+{
+    NSDictionary* resultCol1 = @{@"name":@"DateTimeOriginal", @"index":[NSNumber numberWithInt:0], @"type":[NSNumber numberWithInt:TypeReal]};
+    NSDictionary* resultCol2 = @{@"name":@"groupName", @"index":[NSNumber numberWithInt:1], @"type":[NSNumber numberWithInt:TypeText]};
+    NSDictionary* resultCol3 = @{@"name":@"sectionDate", @"index":[NSNumber numberWithInt:2], @"type":[NSNumber numberWithInt:TypeText]};
+    NSDictionary* resultCol4 = @{@"name":@"url", @"index":[NSNumber numberWithInt:3], @"type":[NSNumber numberWithInt:TypeText]};
+    NSDictionary* resultCol5 = @{@"name":@"groupUrl", @"index":[NSNumber numberWithInt:4], @"type":[NSNumber numberWithInt:TypeText]};
+    NSDictionary* resultCol6 = @{@"name":@"Model", @"index":[NSNumber numberWithInt:5], @"type":[NSNumber numberWithInt:TypeText]};
+    NSDictionary* resultCol7 = @{@"name":@"Maker", @"index":[NSNumber numberWithInt:6], @"type":[NSNumber numberWithInt:TypeText]};
+    NSDictionary* resultCol8 = @{@"name":@"ExposureTime", @"index":[NSNumber numberWithInt:7], @"type":[NSNumber numberWithInt:TypeText]};
+    NSDictionary* resultCol9 = @{@"name":@"FocalLength", @"index":[NSNumber numberWithInt:8], @"type":[NSNumber numberWithInt:TypeText]};
+    NSDictionary* resultCol10 = @{@"name":@"Orientation", @"index":[NSNumber numberWithInt:9], @"type":[NSNumber numberWithInt:TypeInteger]};
+    NSDictionary* resultCol11 = @{@"name":@"Artist", @"index":[NSNumber numberWithInt:10], @"type":[NSNumber numberWithInt:TypeText]};
+    NSDictionary* resultCol12 = @{@"name":@"FNumber", @"index":[NSNumber numberWithInt:11], @"type":[NSNumber numberWithInt:TypeText]};
+    NSDictionary* resultCol13 = @{@"name":@"ISO", @"index":[NSNumber numberWithInt:12], @"type":[NSNumber numberWithInt:TypeText]};
+    NSDictionary* resultCol14 = @{@"name":@"MaxApertureValue", @"index":[NSNumber numberWithInt:13], @"type":[NSNumber numberWithInt:TypeText]};
+    NSDictionary* resultCol15 = @{@"name":@"ExposureCompensation", @"index":[NSNumber numberWithInt:14], @"type":[NSNumber numberWithInt:TypeText]};
+    NSDictionary* resultCol16 = @{@"name":@"Flash", @"index":[NSNumber numberWithInt:15], @"type":[NSNumber numberWithInt:TypeText]};
+    NSDictionary* resultCol17 = @{@"name":@"LensInfo", @"index":[NSNumber numberWithInt:16], @"type":[NSNumber numberWithInt:TypeText]};
+    NSDictionary* resultCol18 = @{@"name":@"LensModel", @"index":[NSNumber numberWithInt:17], @"type":[NSNumber numberWithInt:TypeText]};
+    NSDictionary* resultCol19 = @{@"name":@"Lens", @"index":[NSNumber numberWithInt:18], @"type":[NSNumber numberWithInt:TypeText]};
+    NSArray* resultFormat = @[resultCol1,resultCol2,resultCol3,resultCol4,resultCol5,resultCol6,resultCol7,resultCol8,resultCol9,resultCol10,resultCol11,resultCol12,resultCol13,resultCol14,resultCol15,resultCol16,resultCol17,resultCol18,resultCol19];
+    
+    SQLiteManager* sqlManager = [SQLiteManager sharedSQLiteManager:(NSString*)cDBFileName];
+    return [NSMutableArray arrayWithArray:[sqlManager fetchResultOnSelect:selectString whereAndOrder:whereString format:resultFormat]];
+
+}
 - (void)deleteImage
 {
     SQLiteManager* sqlManager = [SQLiteManager sharedSQLiteManager:(NSString*)cDBFileName];
