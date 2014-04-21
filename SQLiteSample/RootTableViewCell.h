@@ -9,9 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface RootTableViewCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
-@property (weak, nonatomic) IBOutlet UILabel *dateTime;
-@property (weak, nonatomic) IBOutlet UILabel *model;
-@property (weak, nonatomic) IBOutlet UILabel *maker;
+@property (weak, nonatomic, readonly) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UILabel *groupTitle;
+
 
 @end

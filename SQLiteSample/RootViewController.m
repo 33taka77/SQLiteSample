@@ -10,11 +10,16 @@
 #import "SQLiteManager.h"
 #import "AssetManager.h"
 #import "RootTableViewCell.h"
+#import "GroupTableViewController.h"
 
 const NSString* cDBFileName = @"ImageInfo.sqlite3";
 
 @interface RootViewController ()  <AssetLibraryDelegate>
 @property (nonatomic, strong) NSMutableArray* fetchResultArray;
+@property (nonatomic, strong) NSMutableArray* displayArray;
+@property NSInteger currentIndexOfGroup;
+@property (nonatomic, strong) NSMutableArray* groupNames;
+
 //@property (nonatomic, strong) NSArray* fetchResultArray;
 @end
 
@@ -184,20 +189,26 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     [sqlManager createIndex:@"dateIndex" column:@"sectionDate"];
     
     
-    _fetchResultArray = [self performSelect:@"select * from" where:@"where Maker = 'Apple' order by sectionDate asc"];
+    _fetchResultArray = [self performSelect:@"select * from" where:@"where Maker = 'Canon' order by sectionDate asc"];
     NSArray* array = [_fetchResultArray valueForKeyPath:@"groupName"];
-    NSMutableArray* groupNames = [[NSMutableArray alloc] init ];
+    _groupNames = [[NSMutableArray alloc] init ];
     for( NSString* name in array ){
-        if( ![groupNames containsObject:name] ){
-            [groupNames addObject:name];
+        if( ![_groupNames containsObject:name] ){
+            [_groupNames addObject:name];
         }
     }
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:groupNames forKey:@"groupNames"];
+    [defaults setObject:_groupNames forKey:@"groupNames"];
     if ( ![defaults synchronize] ) {
         NSLog( @"failed ..." );
     }
     
+    _displayArray = [[NSMutableArray alloc] init];
+    for( NSString* groupName in _groupNames){
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"groupName = %@",groupName];
+        NSArray* results = [_fetchResultArray filteredArrayUsingPredicate:predicate];
+        [_displayArray addObject:results];
+    }
     /*
     NSDictionary* resultCol1 = @{@"name":@"DateTimeOriginal", @"index":[NSNumber numberWithInt:0], @"type":[NSNumber numberWithInt:TypeReal]};
     NSDictionary* resultCol2 = @{@"name":@"groupName", @"index":[NSNumber numberWithInt:1], @"type":[NSNumber numberWithInt:TypeText]};
@@ -290,7 +301,7 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return _fetchResultArray.count;
+    return _displayArray.count;//_fetchResultArray.count;
 }
 
 
@@ -300,17 +311,26 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     
     // Configure the cell...
     AssetManager* assetManager = [AssetManager sharedAssetManager];
-    
-    NSDictionary* info = _fetchResultArray[indexPath.row];
+    NSArray* tagetArray = _displayArray[indexPath.row];//_fetchResultArray[indexPath.row];
+
+    NSDictionary* info = tagetArray[0];//_fetchResultArray[indexPath.row];
     UIImage* image = [assetManager getThumbnail:[NSURL URLWithString:[info valueForKey:@"url"]]];
     cell.imageView.image = image;
-    cell.dateTime.text = [self dateTimeString:[self convertUnixDataToNSDate:[[info valueForKey:@"DateTimeOriginal"] doubleValue]]];
-    cell.model.text = [info valueForKey:@"Model"];
-    cell.maker.text = [info valueForKey:@"Maker"];
+    cell.groupTitle.text = [info valueForKey:@"groupName"];
+    //cell.dateTime.text = [self dateTimeString:[self convertUnixDataToNSDate:[[info valueForKey:@"DateTimeOriginal"] doubleValue]]];
+    //cell.model.text = [info valueForKey:@"Model"];
+    //cell.maker.text = [info valueForKey:@"Maker"];
+    
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    _currentIndexOfGroup = indexPath.row;
+    GroupTableViewController* viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"GroupTableViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
 
+}
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -349,7 +369,7 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -357,7 +377,10 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    GroupTableViewController* nvc = (GroupTableViewController*)[segue destinationViewController];
+    nvc.title = _groupNames[_currentIndexOfGroup];
+    nvc.groupArray = _displayArray[_currentIndexOfGroup];
 }
-*/
+
 
 @end
