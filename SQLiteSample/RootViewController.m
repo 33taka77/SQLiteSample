@@ -328,6 +328,8 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
 {
     _currentIndexOfGroup = indexPath.row;
     GroupTableViewController* viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"GroupTableViewController"];
+    viewController.groupArray = _displayArray[_currentIndexOfGroup];
+    viewController.title = _groupNames[_currentIndexOfGroup];
     [self.navigationController pushViewController:viewController animated:YES];
 
 }
