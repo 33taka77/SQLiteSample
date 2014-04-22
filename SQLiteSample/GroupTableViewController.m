@@ -67,8 +67,9 @@
     AssetManager* assetManager = [AssetManager sharedAssetManager];
     NSDictionary* info = _groupArray[indexPath.row];
     cell.imageView.image = [assetManager getThumbnail:[NSURL URLWithString:[info valueForKey:@"url"]]];
-    cell.makerLabel = [info valueForKey:@"Maker"];
-    cell.modelLabel = [info valueForKey:@"Model"];
+    cell.dateLabel.text = [info valueForKey:@"sectionDate"];
+    cell.makerLabel.text = [info valueForKey:@"Maker"];
+    cell.modelLabel.text = [info valueForKey:@"Model"];
     return cell;
 }
 
