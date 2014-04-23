@@ -32,10 +32,10 @@
 }
 
 - (void)showGrid {
-    NSInteger numberOfOptions = 9;
+    NSInteger numberOfOptions = 5;
     NSArray *items = @[
-                       [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:@"arrow"] title:@"Next"],
-                       [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:@"attachment"] title:@"Attach"],
+                       [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:@"camera"] title:@"Camera"],
+                       [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:@"calendar"] title:@"Date"],
                        [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:@"block"] title:@"Cancel"],
                        [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:@"bluetooth"] title:@"Bluetooth"],
                        [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:@"cube"] title:@"Deliver"],
