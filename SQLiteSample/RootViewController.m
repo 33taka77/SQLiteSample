@@ -29,11 +29,14 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
 {
     dispatch_sync(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"endActivityIndicator"object:nil userInfo:nil];
     });
 }
 
 - (void)updateItemDataItemURL:(NSURL *)url groupURL:(NSURL *)groupUrl
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"BeginActivityIndicator"object:nil userInfo:nil];
+    
     AssetManager* assetManager = [AssetManager sharedAssetManager];
     
     NSDictionary* metaData = [assetManager getMetaDataByURL:url];
@@ -71,7 +74,7 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
 
     
     [sqlManager insertObject:objectParam1,objectParam2,objectParam3,objectParam4,objectParam5,objectParam6,objectParam7,objectParam8,objectParam9,objectParam10,objectParam11,objectParam12,objectParam13,objectParam14,objectParam15,objectParam16,objectParam17,objectParam18,objectParam19,nil];
-    
+     
 }
 
 - (NSString*)makeShortDateString:(NSString*)dateTime

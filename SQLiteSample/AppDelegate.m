@@ -10,9 +10,23 @@
 
 @implementation AppDelegate
 
+- (void)beginIndicator:(NSNotification*) notfy
+{
+    UIApplication* app = [UIApplication sharedApplication];
+    app.networkActivityIndicatorVisible = YES;
+}
+- (void)endIndicator:(NSNotification*) notfy
+{
+    UIApplication* app = [UIApplication sharedApplication];
+    app.networkActivityIndicatorVisible = NO;
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(beginIndicator:) name:@"BeginActivityIndicator" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(endIndicator:) name:@"endActivityIndicator" object:nil];
+    
     return YES;
 }
 							
@@ -41,6 +55,8 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"BeginActivityIndicator" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"endActivityIndicator" object:nil];
 }
 
 @end
