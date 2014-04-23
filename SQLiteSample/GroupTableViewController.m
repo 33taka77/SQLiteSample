@@ -11,7 +11,7 @@
 #import "AssetManager.h"
 #import "RNGridMenu.h"
 
-@interface GroupTableViewController ()
+@interface GroupTableViewController () <RNGridMenuDelegate>
 
 @end
 
@@ -25,6 +25,12 @@
     }
     return self;
 }
+
+- (void)gridMenu:(RNGridMenu *)gridMenu willDismissWithSelectedItem:(RNGridMenuItem *)item atIndex:(NSInteger)itemIndex
+{
+    NSLog(@"Dismissed with item %ld: %@", (long)itemIndex, item.title);
+}
+
 - (void)showGrid {
     NSInteger numberOfOptions = 9;
     NSArray *items = @[
