@@ -12,6 +12,7 @@
 #import "RootTableViewCell.h"
 #import "GroupTableViewController.h"
 
+
 const NSString* cDBFileName = @"ImageInfo.sqlite3";
 
 @interface RootViewController ()  <AssetLibraryDelegate>
@@ -74,7 +75,7 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
 
     
     [sqlManager insertObject:objectParam1,objectParam2,objectParam3,objectParam4,objectParam5,objectParam6,objectParam7,objectParam8,objectParam9,objectParam10,objectParam11,objectParam12,objectParam13,objectParam14,objectParam15,objectParam16,objectParam17,objectParam18,objectParam19,nil];
-     
+    
 }
 
 - (NSString*)makeShortDateString:(NSString*)dateTime
@@ -212,6 +213,7 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
         NSArray* results = [_fetchResultArray filteredArrayUsingPredicate:predicate];
         [_displayArray addObject:results];
     }
+
     /*
     NSDictionary* resultCol1 = @{@"name":@"DateTimeOriginal", @"index":[NSNumber numberWithInt:0], @"type":[NSNumber numberWithInt:TypeReal]};
     NSDictionary* resultCol2 = @{@"name":@"groupName", @"index":[NSNumber numberWithInt:1], @"type":[NSNumber numberWithInt:TypeText]};
