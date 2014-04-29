@@ -10,9 +10,12 @@
 #import "GroupTableViewCell.h"
 #import "AssetManager.h"
 #import "RNGridMenu.h"
+#import "TableViewHeaderCell.h"
 
 @interface GroupTableViewController () <RNGridMenuDelegate>
-
+@property (nonatomic,strong) NSMutableArray* sections;
+@property (nonatomic,strong) NSString* sectionString;
+@property (nonatomic,strong) NSMutableArray* sectionItems;
 @end
 
 @implementation GroupTableViewController
@@ -29,6 +32,7 @@
 - (void)gridMenu:(RNGridMenu *)gridMenu willDismissWithSelectedItem:(RNGridMenuItem *)item atIndex:(NSInteger)itemIndex
 {
     NSLog(@"Dismissed with item %ld: %@", (long)itemIndex, item.title);
+    
 }
 
 - (void)showGrid {
@@ -62,7 +66,28 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     UIBarButtonItem* refleshBarbottun = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(selectMenue)];
     self.navigationItem.rightBarButtonItem = refleshBarbottun;
+    
+    [self rebuildSectionItems:@"sectionDate"];
+}
 
+- (void)rebuildSectionItems:(NSString*)sectionName
+{
+    _sectionString = sectionName;
+    NSArray* array = [_groupArray valueForKeyPath:_sectionString];
+    _sections = [[NSMutableArray alloc] init ];
+    for( NSString* name in array ){
+        if( ![_sections containsObject:name] ){
+            [_sections addObject:name];
+        }
+    }
+    if( _sectionItems == nil){
+        _sectionItems = [[NSMutableArray alloc] init];
+    }
+    for( NSString* sectionName in _sections){
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"sectionDate = %@",sectionName];
+        NSArray* items = [_groupArray filteredArrayUsingPredicate:predicate];
+        [_sectionItems addObject:items];
+    }
 }
 
 - (void)selectMenue
@@ -82,14 +107,15 @@
 {
 #warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 1;
+    return _sections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 #warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return _groupArray.count;
+    NSArray* items = _sectionItems[section];
+    return items.count;
 }
 
 
@@ -107,7 +133,12 @@
     return cell;
 }
 
-
+- (UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
+{
+    TableViewHeaderCell* header = (TableViewHeaderCell*)[tableView dequeueReusableCellWithIdentifier:@"setionHeaderCell"];
+    header.headerTitle.text = _sections[section];
+    return header;
+}
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath

@@ -34,6 +34,7 @@
 		8189E4441901089200E4DF28 /* SQLiteSampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8189E4431901089200E4DF28 /* SQLiteSampleTests.m */; };
 		8189E44F190108AB00E4DF28 /* SQLiteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8189E44E190108AB00E4DF28 /* SQLiteManager.m */; };
 		8189E451190108D800E4DF28 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8189E450190108D800E4DF28 /* libsqlite3.dylib */; };
+		F9534DEF190F4BA2009ED85C /* TableViewHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F9534DEE190F4BA2009ED85C /* TableViewHeaderCell.m */; };
 		F9B6F09B1907EFA0001318E5 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = F9B6F09A1907EFA0001318E5 /* camera.png */; };
 		F9B6F09D1907EFAB001318E5 /* calendar.png in Resources */ = {isa = PBXBuildFile; fileRef = F9B6F09C1907EFAB001318E5 /* calendar.png */; };
 		F9B6F09F1907F1A8001318E5 /* cloud.png in Resources */ = {isa = PBXBuildFile; fileRef = F9B6F09E1907F1A8001318E5 /* cloud.png */; };
@@ -107,6 +108,8 @@
 		8189E44D190108AB00E4DF28 /* SQLiteManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLiteManager.h; sourceTree = "<group>"; };
 		8189E44E190108AB00E4DF28 /* SQLiteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQLiteManager.m; sourceTree = "<group>"; };
 		8189E450190108D800E4DF28 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		F9534DED190F4BA2009ED85C /* TableViewHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewHeaderCell.h; sourceTree = "<group>"; };
+		F9534DEE190F4BA2009ED85C /* TableViewHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewHeaderCell.m; sourceTree = "<group>"; };
 		F9B6F09A1907EFA0001318E5 /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
 		F9B6F09C1907EFAB001318E5 /* calendar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = calendar.png; sourceTree = "<group>"; };
 		F9B6F09E1907F1A8001318E5 /* cloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cloud.png; sourceTree = "<group>"; };
@@ -200,35 +203,7 @@
 		8189E41B1901089100E4DF28 /* SQLiteSample */ = {
 			isa = PBXGroup;
 			children = (
-				F9B6F0C01907F720001318E5 /* search.png */,
-				F9B6F0A61907F2AB001318E5 /* clip.png */,
-				F9B6F0A71907F2AB001318E5 /* diamond.png */,
-				F9B6F0A81907F2AB001318E5 /* eye.png */,
-				F9B6F0A91907F2AB001318E5 /* heart.png */,
-				F9B6F0AA1907F2AB001318E5 /* news.png */,
-				F9B6F0AB1907F2AB001318E5 /* note.png */,
-				F9B6F0AC1907F2AB001318E5 /* paperplane.png */,
-				F9B6F0AD1907F2AB001318E5 /* params.png */,
-				F9B6F0AE1907F2AB001318E5 /* photo.png */,
-				F9B6F0AF1907F2AB001318E5 /* settings.png */,
-				F9B6F0B01907F2AB001318E5 /* stack.png */,
-				F9B6F0B11907F2AB001318E5 /* star.png */,
-				F9B6F0B21907F2AB001318E5 /* t-shirt.png */,
-				F9B6F0A41907F26D001318E5 /* trash.png */,
-				F9B6F0A21907F259001318E5 /* tag.png */,
-				F9B6F0A01907F1B6001318E5 /* bubble.png */,
-				F9B6F09E1907F1A8001318E5 /* cloud.png */,
-				F9B6F09C1907EFAB001318E5 /* calendar.png */,
-				F9B6F09A1907EFA0001318E5 /* camera.png */,
-				813204CE1907A299008A1CFC /* arrow.png */,
-				813204CF1907A299008A1CFC /* attachment.png */,
-				813204D01907A299008A1CFC /* block.png */,
-				813204D11907A299008A1CFC /* bluetooth.png */,
-				813204D21907A299008A1CFC /* cube.png */,
-				813204D31907A299008A1CFC /* download.png */,
-				813204D41907A299008A1CFC /* enter.png */,
-				813204D51907A299008A1CFC /* file.png */,
-				813204D61907A299008A1CFC /* github.png */,
+				F9534DEC190E15BA009ED85C /* icon */,
 				813204CB1907A28C008A1CFC /* RNGridMenu.h */,
 				813204CC1907A28C008A1CFC /* RNGridMenu.m */,
 				F9FE9FA119015D7200FC7EEB /* AssetManager.h */,
@@ -240,6 +215,8 @@
 				8189E4241901089100E4DF28 /* AppDelegate.h */,
 				8189E4251901089100E4DF28 /* AppDelegate.m */,
 				8189E4271901089100E4DF28 /* Main_iPhone.storyboard */,
+				F9534DED190F4BA2009ED85C /* TableViewHeaderCell.h */,
+				F9534DEE190F4BA2009ED85C /* TableViewHeaderCell.m */,
 				F9BF1832190522A20012341B /* GroupTableViewController.h */,
 				F9BF1833190522A20012341B /* GroupTableViewController.m */,
 				F9BF183519052FF30012341B /* GroupTableViewCell.h */,
@@ -284,6 +261,42 @@
 				8189E4401901089200E4DF28 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F9534DEC190E15BA009ED85C /* icon */ = {
+			isa = PBXGroup;
+			children = (
+				F9B6F0C01907F720001318E5 /* search.png */,
+				F9B6F0A61907F2AB001318E5 /* clip.png */,
+				F9B6F0A71907F2AB001318E5 /* diamond.png */,
+				F9B6F0A81907F2AB001318E5 /* eye.png */,
+				F9B6F0A91907F2AB001318E5 /* heart.png */,
+				F9B6F0AA1907F2AB001318E5 /* news.png */,
+				F9B6F0AB1907F2AB001318E5 /* note.png */,
+				F9B6F0AC1907F2AB001318E5 /* paperplane.png */,
+				F9B6F0AD1907F2AB001318E5 /* params.png */,
+				F9B6F0AE1907F2AB001318E5 /* photo.png */,
+				F9B6F0AF1907F2AB001318E5 /* settings.png */,
+				F9B6F0B01907F2AB001318E5 /* stack.png */,
+				F9B6F0B11907F2AB001318E5 /* star.png */,
+				F9B6F0B21907F2AB001318E5 /* t-shirt.png */,
+				F9B6F0A41907F26D001318E5 /* trash.png */,
+				F9B6F0A21907F259001318E5 /* tag.png */,
+				F9B6F0A01907F1B6001318E5 /* bubble.png */,
+				F9B6F09E1907F1A8001318E5 /* cloud.png */,
+				F9B6F09C1907EFAB001318E5 /* calendar.png */,
+				F9B6F09A1907EFA0001318E5 /* camera.png */,
+				813204CE1907A299008A1CFC /* arrow.png */,
+				813204CF1907A299008A1CFC /* attachment.png */,
+				813204D01907A299008A1CFC /* block.png */,
+				813204D11907A299008A1CFC /* bluetooth.png */,
+				813204D21907A299008A1CFC /* cube.png */,
+				813204D31907A299008A1CFC /* download.png */,
+				813204D41907A299008A1CFC /* enter.png */,
+				813204D51907A299008A1CFC /* file.png */,
+				813204D61907A299008A1CFC /* github.png */,
+			);
+			name = icon;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -413,6 +426,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F9534DEF190F4BA2009ED85C /* TableViewHeaderCell.m in Sources */,
 				8189E42F1901089100E4DF28 /* ViewController.m in Sources */,
 				F9FE9FA919015F4800FC7EEB /* RootViewController.m in Sources */,
 				F9BF1834190522A20012341B /* GroupTableViewController.m in Sources */,
