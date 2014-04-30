@@ -32,7 +32,10 @@
 - (void)gridMenu:(RNGridMenu *)gridMenu willDismissWithSelectedItem:(RNGridMenuItem *)item atIndex:(NSInteger)itemIndex
 {
     NSLog(@"Dismissed with item %ld: %@", (long)itemIndex, item.title);
-    
+    if( itemIndex == 0 ){
+        [self rebuildSectionItems:@"Model"];
+        [self.tableView reloadData];
+    }
 }
 
 - (void)showGrid {
@@ -74,7 +77,10 @@
 {
     _sectionString = sectionName;
     NSArray* array = [_groupArray valueForKeyPath:_sectionString];
-    _sections = [[NSMutableArray alloc] init ];
+    if( _sections == nil ){
+        _sections = [[NSMutableArray alloc] init ];
+    }
+    [_sections removeAllObjects];
     for( NSString* name in array ){
         if( ![_sections containsObject:name] ){
             [_sections addObject:name];
@@ -83,8 +89,9 @@
     if( _sectionItems == nil){
         _sectionItems = [[NSMutableArray alloc] init];
     }
-    for( NSString* sectionName in _sections){
-        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"sectionDate = %@",sectionName];
+    [_sectionItems removeAllObjects];
+    for( NSString* name in _sections){
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K = %@",sectionName, name];
         NSArray* items = [_groupArray filteredArrayUsingPredicate:predicate];
         [_sectionItems addObject:items];
     }
@@ -125,7 +132,8 @@
     
     // Configure the cell...
     AssetManager* assetManager = [AssetManager sharedAssetManager];
-    NSDictionary* info = _groupArray[indexPath.row];
+    NSArray* items = _sectionItems[indexPath.section];
+    NSDictionary* info = items[indexPath.row];
     cell.imageView.image = [assetManager getThumbnail:[NSURL URLWithString:[info valueForKey:@"url"]]];
     cell.dateLabel.text = [info valueForKey:@"sectionDate"];
     cell.makerLabel.text = [info valueForKey:@"Maker"];
